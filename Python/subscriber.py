@@ -3,13 +3,15 @@ import sys
 
 # Subscribe
 def callback(msg):
-    print("Received a message with subject" + msg.subject)
+    print("Received a message with subject: " + msg.subject)
 
 def main(natsurl):
-    with NATSClient() as nc:
+    with NATSClient(url=natsurl) as nc:
         nc.connect()
 
         nc.subscribe(subject="*", callback=callback)
+
+        nc.wait(count = 1)
 
     input("Press Enter to terminate")
 
