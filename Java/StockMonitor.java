@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class StockMonitor {
     public static void main(String[] args) throws Exception {
         AtomicReference<String> tempString = new AtomicReference<>("");
-        String logFilePath = ""; //path to log file 
+        String logFilePath = ""; //path to log file
         Connection nc = Nats.connect("nats://localhost:4222");
         NatsMessageLogger logger = new NatsMessageLogger(logFilePath);
 

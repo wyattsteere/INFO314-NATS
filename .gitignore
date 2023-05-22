@@ -29,3 +29,5 @@ replay_pid*
 venv/
 *.pyc
 __pycache__/
+
+.DS_Store

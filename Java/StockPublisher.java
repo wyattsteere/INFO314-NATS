@@ -14,7 +14,7 @@ public class StockPublisher {
             natsURL = args[0];
         }
 
-        System.console().writer().println("Starting stock publisher....");
+        System.out.println("Starting stock publisher....");
 
         StockMarket sm1 = new StockMarket(StockPublisher::publishMessage, "AMZN", "MSFT", "GOOG", "NASDAQ", "DOWJones", "JSLM", "JNDJ", "SMSG", "LG", "HUH");
         new Thread(sm1).start();
@@ -25,7 +25,7 @@ public class StockPublisher {
     }
 
     public synchronized static void publishDebugOutput(String symbol, int adjustment, int price) {
-        System.console().writer().printf("PUBLISHING %s: %d -> %f\n", symbol, adjustment, (price / 100.f));
+        System.out.printf("PUBLISHING %s: %d -> %f\n", symbol, adjustment, (price / 100.f));
     }
     
     // When you have the NATS code here to publish a message, put "publishMessage" in

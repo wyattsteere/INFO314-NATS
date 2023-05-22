@@ -55,7 +55,7 @@ public class StockMarket implements Runnable {
       Random priceFluctuator = new Random();
   
       try {
-        while (quit.get() == false) {
+        while (!quit.get()) {
           // Sleep up to 5 seconds
           Thread.sleep(waiter.nextInt(5) * 1000);
   
