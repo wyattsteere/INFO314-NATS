@@ -1,11 +1,10 @@
 import io.nats.client.*;
 
-import java.io.*;
-import java.sql.SQLOutput;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class StockMonitor {
     public static void main(String[] args) throws Exception {
-        String asdf = "";
+        AtomicReference<String> tempString = new AtomicReference<>("");
         String logFilePath = ""; //path to log file 
         Connection nc = Nats.connect("nats://localhost:4222");
         NatsMessageLogger logger = new NatsMessageLogger(logFilePath);
@@ -16,35 +15,17 @@ public class StockMonitor {
         dispatchNAS.subscribe("NASDAQ"); //subscribing to entire stock market
 
         Dispatcher dispatchDOW = nc.createDispatcher((msg) -> {
-            asdf = ("DOWJones stock prices: " + new String(msg.getData())); //save as var
+            AtomicReference<String> tempAtomicReference = new AtomicReference<>("DOWJones stock prices: " + new String(msg.getData()));
+            // Convert tempString to atomic
+            tempString.set(tempAtomicReference.get());
         });
         dispatchDOW.subscribe("DOWJones"); //example names
 
-        logger.logMessage(asdf);
+        logger.logMessage(tempString.get());
 
         // Close the logger and connection
         logger.close();
-        connection.close();
+        nc.close();
     }
 }
 
-public class NatsMessageLogger {
-    private BufferedWriter writer;
-
-    public NatsMessageLogger(String logFilePath) throws IOException {
-        writer = new BufferedWriter(new FileWriter(logFilePath, true));
-    }
-
-    public void logMessage(String message) throws IOException {
-        writer.write(message);
-        writer.newLine();
-        writer.flush();
-    }
-
-    public void close() {
-        try {
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
